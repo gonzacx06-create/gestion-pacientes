@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pacientes · Evoluciones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1><i class="fas fa-notes-medical"></i> Gestión de Pacientes · Evoluciones</h1>
+        <div class="header-actions">
+            <button class="btn btn-outline" id="btnCambiarVista"><i class="fas fa-th-large"></i> Vista</button>
+            <button class="btn btn-primary" id="btnNuevoPaciente"><i class="fas fa-plus-circle"></i> Nuevo ingreso</button>
+        </div>
+    </header>
+
+    <div class="search-bar">
+        <input type="text" id="inputBuscar" placeholder="Buscar por nombre o DNI..." />
+        <button class="btn btn-soft" id="btnLimpiarBusqueda"><i class="fas fa-times"></i></button>
+    </div>
+
+    <main id="pacientesContainer" class="pacientes-grid">
+        <!-- Se renderiza dinámicamente -->
+    </main>
+
+    <div class="modal-overlay" id="modalPaciente">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitulo"><i class="fas fa-user-plus"></i> Nuevo ingreso</h2>
+                <button class="btn-close-modal" id="btnCerrarModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="formPaciente"></form>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer"></div>
+
+    <script type="module" src="/js/app.js"></script>
+</body>
+</html>

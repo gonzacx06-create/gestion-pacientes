@@ -1,0 +1,20 @@
+# Node
+node_modules/
+npm-debug.log
+package-lock.json
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Archivos de datos locales
+data/pacientes.json
+
+# Editor
+.vscode/
+.idea/
+
+# Sistema
+.DS_Store
+Thumbs.db
