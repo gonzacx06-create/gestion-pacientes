@@ -70,7 +70,7 @@ function renderPacientes() {
 
     lista.forEach(p => {
         const nombreCompleto = `${p.nombre} ${p.apellido}`;
-        const ultima = p.ultimaActualizacion || p.fechaIngreso;
+        const ultima = p.ultimaactualizacion || p.fechaingreso;
         const camaDisplay = p.cama ? `Cama ${p.cama}` : 'Sin cama';
 
         html += `
@@ -96,7 +96,7 @@ function renderPacientes() {
 
 // ===== Función para renderizar la ficha editable =====
 function renderFicha(p) {
-    const otrosHtml = p.otros.map((otro, idx) => `
+    const otrosHtml = (p.otros || []).map((otro, idx) => `
         <div class="otro-item" data-otro-idx="${idx}">
             <input type="text" class="otro-nombre" value="${escapeHtml(otro.nombre)}" placeholder="Nombre" />
             <input type="text" class="otro-valor" value="${escapeHtml(otro.valor)}" placeholder="Valor" />
@@ -104,12 +104,12 @@ function renderFicha(p) {
         </div>
     `).join('');
 
-    const fechaIngresoDisplay = p.fechaIngreso || 'No registrada';
+    const fechaIngresoDisplay = p.fechaingreso || 'No registrada';
 
     return `
         <div class="ficha-header">
             <div><strong>${escapeHtml(p.nombre)} ${escapeHtml(p.apellido)}</strong> · DNI ${escapeHtml(p.dni)}</div>
-            <div class="ult-act"><i class="fas fa-sync-alt"></i> Última actualización: <span id="ultAct-${p.id}">${p.ultimaActualizacion || p.fechaIngreso}</span></div>
+            <div class="ult-act"><i class="fas fa-sync-alt"></i> Última actualización: <span id="ultAct-${p.id}">${p.ultimaactualizacion || p.fechaingreso}</span></div>
         </div>
         <div class="ficha-grid" id="fichaGrid-${p.id}">
             <div class="ficha-group">
@@ -134,11 +134,11 @@ function renderFicha(p) {
             </div>
             <div class="ficha-group">
                 <label>Obra Social</label>
-                <input type="text" class="ficha-input" data-field="obraSocial" value="${escapeHtml(p.obraSocial)}" />
+                <input type="text" class="ficha-input" data-field="obrasocial" value="${escapeHtml(p.obrasocial)}" />
             </div>
             <div class="ficha-group">
                 <label>Motivo de Ingreso</label>
-                <input type="text" class="ficha-input" data-field="motivoIngreso" value="${escapeHtml(p.motivoIngreso)}" />
+                <input type="text" class="ficha-input" data-field="motivoingreso" value="${escapeHtml(p.motivoingreso)}" />
             </div>
             <div class="ficha-group">
                 <label>Sedación</label>
@@ -146,17 +146,17 @@ function renderFicha(p) {
             </div>
             <div class="ficha-group">
                 <label>Estudios Pendientes</label>
-                <input type="text" class="ficha-input" data-field="estudiosPendientes" value="${escapeHtml(p.estudiosPendientes)}" />
+                <input type="text" class="ficha-input" data-field="estudiospendientes" value="${escapeHtml(p.estudiospendientes)}" />
             </div>
             <div class="ficha-group ficha-check">
                 <label>Vía Central</label>
-                <input type="checkbox" class="ficha-checkbox" data-field="viaCentral" ${p.viaCentral ? 'checked' : ''} />
-                <input type="text" class="ficha-text-date" data-field="fechaViaCentral" value="${escapeHtml(p.fechaViaCentral)}" placeholder="dd/mm/aaaa" />
+                <input type="checkbox" class="ficha-checkbox" data-field="viacentral" ${p.viacentral ? 'checked' : ''} />
+                <input type="text" class="ficha-text-date" data-field="fechaviacentral" value="${escapeHtml(p.fechaviacentral)}" placeholder="dd/mm/aaaa" />
             </div>
             <div class="ficha-group ficha-check">
                 <label>Sonda Vesical</label>
-                <input type="checkbox" class="ficha-checkbox" data-field="sondaVesical" ${p.sondaVesical ? 'checked' : ''} />
-                <input type="text" class="ficha-text-date" data-field="fechaSondaVesical" value="${escapeHtml(p.fechaSondaVesical)}" placeholder="dd/mm/aaaa" />
+                <input type="checkbox" class="ficha-checkbox" data-field="sondavesical" ${p.sondavesical ? 'checked' : ''} />
+                <input type="text" class="ficha-text-date" data-field="fechasondavesical" value="${escapeHtml(p.fechasondavesical)}" placeholder="dd/mm/aaaa" />
             </div>
             <div class="ficha-group">
                 <label>Drenajes</label>
@@ -176,15 +176,15 @@ function renderFicha(p) {
             </div>
             <div class="ficha-group">
                 <label>Alimentación Oral</label>
-                <input type="text" class="ficha-input" data-field="alimentacionOral" value="${escapeHtml(p.alimentacionOral)}" />
+                <input type="text" class="ficha-input" data-field="alimentacionoral" value="${escapeHtml(p.alimentacionoral)}" />
             </div>
             <div class="ficha-group">
                 <label>Alimentación Enteral</label>
-                <input type="text" class="ficha-input" data-field="alimentacionEnteral" value="${escapeHtml(p.alimentacionEnteral)}" />
+                <input type="text" class="ficha-input" data-field="alimentacionenteral" value="${escapeHtml(p.alimentacionenteral)}" />
             </div>
             <div class="ficha-group">
                 <label>Alimentación Parenteral</label>
-                <input type="text" class="ficha-input" data-field="alimentacionParenteral" value="${escapeHtml(p.alimentacionParenteral)}" />
+                <input type="text" class="ficha-input" data-field="alimentacionparenteral" value="${escapeHtml(p.alimentacionparenteral)}" />
             </div>
             <div class="ficha-group">
                 <label>Alergias</label>
@@ -272,13 +272,13 @@ window.guardarFicha = async function(id) {
         p.otros = nuevosOtros;
     }
 
-    p.ultimaActualizacion = fechaAhoraArgentina();
+    p.ultimaactualizacion = fechaAhoraArgentina();
     pacientes[index] = p;
 
     try {
         await savePacientes(pacientes);
         const ultSpan = document.getElementById(`ultAct-${id}`);
-        if (ultSpan) ultSpan.textContent = p.ultimaActualizacion;
+        if (ultSpan) ultSpan.textContent = p.ultimaactualizacion;
         mostrarToast('Cambios guardados correctamente', 'success');
         renderPacientes();
         setTimeout(() => {
@@ -347,7 +347,7 @@ function cerrarModal() {
 
 function generarFormulario(paciente) {
     const p = paciente || {};
-    const fechaHora = p.fechaIngreso ? new Date(p.fechaIngreso).toISOString().slice(0,16) : '';
+    const fechaHora = p.fechaingreso ? new Date(p.fechaingreso).toISOString().slice(0,16) : '';
     return `
         <div class="form-grid">
             <div class="form-group">
@@ -372,11 +372,11 @@ function generarFormulario(paciente) {
             </div>
             <div class="form-group">
                 <label>Obra Social</label>
-                <input type="text" id="obraSocialModal" value="${escapeHtml(p.obraSocial || '')}" />
+                <input type="text" id="obraSocialModal" value="${escapeHtml(p.obrasocial || '')}" />
             </div>
             <div class="form-group">
                 <label>Motivo de Ingreso</label>
-                <input type="text" id="motivoIngresoModal" value="${escapeHtml(p.motivoIngreso || '')}" />
+                <input type="text" id="motivoIngresoModal" value="${escapeHtml(p.motivoingreso || '')}" />
             </div>
             <div class="form-group">
                 <label>Sedación</label>
@@ -384,17 +384,17 @@ function generarFormulario(paciente) {
             </div>
             <div class="form-group">
                 <label>Estudios Pendientes</label>
-                <input type="text" id="estudiosModal" value="${escapeHtml(p.estudiosPendientes || '')}" />
+                <input type="text" id="estudiosModal" value="${escapeHtml(p.estudiospendientes || '')}" />
             </div>
             <div class="form-group checkbox-group">
                 <label>Vía Central</label>
-                <input type="checkbox" id="viaCentralModal" ${p.viaCentral ? 'checked' : ''} />
-                <input type="text" id="fechaViaCentralModal" value="${escapeHtml(p.fechaViaCentral || '')}" placeholder="dd/mm/aaaa" />
+                <input type="checkbox" id="viaCentralModal" ${p.viacentral ? 'checked' : ''} />
+                <input type="text" id="fechaViaCentralModal" value="${escapeHtml(p.fechaviacentral || '')}" placeholder="dd/mm/aaaa" />
             </div>
             <div class="form-group checkbox-group">
                 <label>Sonda Vesical</label>
-                <input type="checkbox" id="sondaVesicalModal" ${p.sondaVesical ? 'checked' : ''} />
-                <input type="text" id="fechaSondaVesicalModal" value="${escapeHtml(p.fechaSondaVesical || '')}" placeholder="dd/mm/aaaa" />
+                <input type="checkbox" id="sondaVesicalModal" ${p.sondavesical ? 'checked' : ''} />
+                <input type="text" id="fechaSondaVesicalModal" value="${escapeHtml(p.fechasondavesical || '')}" placeholder="dd/mm/aaaa" />
             </div>
             <div class="form-group">
                 <label>Drenajes</label>
@@ -414,15 +414,15 @@ function generarFormulario(paciente) {
             </div>
             <div class="form-group">
                 <label>Alimentación Oral</label>
-                <input type="text" id="alimOralModal" value="${escapeHtml(p.alimentacionOral || '')}" />
+                <input type="text" id="alimOralModal" value="${escapeHtml(p.alimentacionoral || '')}" />
             </div>
             <div class="form-group">
                 <label>Alimentación Enteral</label>
-                <input type="text" id="alimEnteralModal" value="${escapeHtml(p.alimentacionEnteral || '')}" />
+                <input type="text" id="alimEnteralModal" value="${escapeHtml(p.alimentacionenteral || '')}" />
             </div>
             <div class="form-group">
                 <label>Alimentación Parenteral</label>
-                <input type="text" id="alimParenteralModal" value="${escapeHtml(p.alimentacionParenteral || '')}" />
+                <input type="text" id="alimParenteralModal" value="${escapeHtml(p.alimentacionparenteral || '')}" />
             </div>
             <div class="form-group">
                 <label>Alergias</label>
@@ -512,25 +512,25 @@ formPaciente.addEventListener('submit', async function(e) {
         nombre,
         apellido,
         dni,
-        obraSocial,
-        motivoIngreso,
+        obrasocial: obraSocial,
+        motivoingreso: motivoIngreso,
         sedacion,
-        fechaIngreso: fechaHoraStr,
-        estudiosPendientes: estudios,
-        viaCentral,
-        fechaViaCentral,
-        sondaVesical,
-        fechaSondaVesical,
+        fechaingreso: fechaHoraStr,
+        estudiospendientes: estudios,
+        viacentral: viaCentral,
+        fechaviacentral: fechaViaCentral,
+        sondavesical: sondaVesical,
+        fechasondavesical: fechaSondaVesical,
         drenajes,
         cirugias,
         cultivos,
         catarsis,
-        alimentacionOral: alimOral,
-        alimentacionEnteral: alimEnteral,
-        alimentacionParenteral: alimParenteral,
+        alimentacionoral: alimOral,
+        alimentacionenteral: alimEnteral,
+        alimentacionparenteral: alimParenteral,
         alergias,
         otros,
-        ultimaActualizacion: fechaHoraStr
+        ultimaactualizacion: fechaHoraStr
     };
 
     if (pacienteEditandoId) {
@@ -576,7 +576,7 @@ btnLimpiarBusqueda.addEventListener('click', () => {
     renderPacientes();
 });
 
-// ===== Exponer funciones globales para los onclick del HTML =====
+// ===== Exponer funciones globales =====
 window.cerrarModal = cerrarModal;
 window.abrirModal = abrirModal;
 window.agregarOtroModal = agregarOtroModal;
