@@ -109,15 +109,15 @@ function renderFicha(p) {
     return `
         <div class="ficha-header">
             <div><strong>${escapeHtml(p.nombre)} ${escapeHtml(p.apellido)}</strong> · DNI ${escapeHtml(p.dni)}</div>
-            <div class="ult-act"><i class="fas fa-sync-alt"></i> Última actualización: <span id="ultAct-${p.id}">${p.ultimaactualizacion || p.fechaingreso}</span></div>
+            <div class="ult-act"><i class="fas fa-sync-alt"></i> ${p.ultimaactualizacion || p.fechaingreso}</div>
         </div>
         <div class="ficha-grid" id="fichaGrid-${p.id}">
             <div class="ficha-group">
-                <label>Fecha y hora de ingreso</label>
+                <label>Fecha ingreso</label>
                 <input type="text" readonly value="${escapeHtml(fechaIngresoDisplay)}" />
             </div>
             <div class="ficha-group">
-                <label>Número de cama</label>
+                <label>N° cama</label>
                 <input type="number" class="ficha-input" data-field="cama" value="${p.cama ?? ''}" min="1" step="1" />
             </div>
             <div class="ficha-group">
@@ -137,7 +137,7 @@ function renderFicha(p) {
                 <input type="text" class="ficha-input" data-field="obrasocial" value="${escapeHtml(p.obrasocial)}" />
             </div>
             <div class="ficha-group">
-                <label>Motivo de Ingreso</label>
+                <label>Motivo Ingreso</label>
                 <input type="text" class="ficha-input" data-field="motivoingreso" value="${escapeHtml(p.motivoingreso)}" />
             </div>
             <div class="ficha-group">
@@ -175,15 +175,15 @@ function renderFicha(p) {
                 <input type="text" class="ficha-input" data-field="catarsis" value="${escapeHtml(p.catarsis)}" />
             </div>
             <div class="ficha-group">
-                <label>Alimentación Oral</label>
+                <label>Alim. Oral</label>
                 <input type="text" class="ficha-input" data-field="alimentacionoral" value="${escapeHtml(p.alimentacionoral)}" />
             </div>
             <div class="ficha-group">
-                <label>Alimentación Enteral</label>
+                <label>Alim. Enteral</label>
                 <input type="text" class="ficha-input" data-field="alimentacionenteral" value="${escapeHtml(p.alimentacionenteral)}" />
             </div>
             <div class="ficha-group">
-                <label>Alimentación Parenteral</label>
+                <label>Alim. Parenteral</label>
                 <input type="text" class="ficha-input" data-field="alimentacionparenteral" value="${escapeHtml(p.alimentacionparenteral)}" />
             </div>
             <div class="ficha-group">
@@ -193,18 +193,18 @@ function renderFicha(p) {
             <div class="otros-container">
                 <div class="otros-header">
                     <i class="fas fa-ellipsis-h"></i>
-                    <label>Otros (nombre · valor)</label>
+                    <label>Otros</label>
                 </div>
                 <div id="otrosFicha-${p.id}">
                     ${otrosHtml}
                 </div>
-                <button type="button" class="btn btn-soft btn-sm" onclick="agregarOtroFicha('${p.id}')" style="margin-top:8px;">
-                    <i class="fas fa-plus"></i> Agregar otro
+                <button type="button" class="btn btn-soft btn-sm" onclick="agregarOtroFicha('${p.id}')" style="margin-top:4px;">
+                    <i class="fas fa-plus"></i> Agregar
                 </button>
             </div>
             <div class="ficha-actions">
-                <button class="btn btn-success btn-sm" onclick="guardarFicha('${p.id}')"><i class="fas fa-save"></i> Guardar cambios</button>
-                <button class="btn btn-danger btn-sm" onclick="eliminarPaciente('${p.id}')"><i class="fas fa-user-times"></i> Dar de alta</button>
+                <button class="btn btn-success btn-sm" onclick="guardarFicha('${p.id}')"><i class="fas fa-save"></i> Guardar</button>
+                <button class="btn btn-danger btn-sm" onclick="eliminarPaciente('${p.id}')"><i class="fas fa-user-times"></i> Alta</button>
             </div>
         </div>
     `;

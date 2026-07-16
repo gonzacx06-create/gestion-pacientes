@@ -1,4 +1,4 @@
-/* ===== Variables ===== */
+/* ===== Variables mejoradas ===== */
 :root {
     --color-primary: #6a9bb5;
     --color-primary-dark: #4f84a0;
@@ -15,8 +15,8 @@
     --color-warning: #b8863a;
     --color-error: #c0392b;
     --font-family: 'Nunito', sans-serif;
-    --border-radius: 12px;
-    --transition: 0.2s ease;
+    --border-radius: 14px;
+    --transition: 0.25s ease;
 }
 
 /* ===== Reset y global ===== */
@@ -32,7 +32,6 @@ body {
     color: var(--color-text);
     padding: 16px;
     min-height: 100vh;
-    font-size: 14px;
 }
 
 /* ===== Header ===== */
@@ -54,7 +53,7 @@ body {
 
 .header h1 {
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: #154a60;
 }
 .header h1 i {
@@ -68,11 +67,11 @@ body {
     flex-wrap: wrap;
 }
 
-/* ===== Botones ===== */
+/* ===== Botones compactos ===== */
 .btn {
     padding: 8px 18px;
     border: none;
-    border-radius: 30px;
+    border-radius: 40px;
     font-weight: 600;
     font-size: 0.9rem;
     cursor: pointer;
@@ -80,7 +79,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    box-shadow: 0 3px 10px rgba(106, 155, 181, 0.2);
+    box-shadow: 0 4px 12px rgba(106, 155, 181, 0.2);
 }
 .btn:hover {
     transform: translateY(-2px);
@@ -102,7 +101,7 @@ body {
     box-shadow: none;
 }
 .btn-outline:hover {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.6);
     border-color: var(--color-primary);
 }
 
@@ -144,8 +143,8 @@ body {
     margin-bottom: 18px;
     background: white;
     padding: 8px 16px;
-    border-radius: 30px;
-    box-shadow: 0 3px 10px var(--color-shadow);
+    border-radius: 40px;
+    box-shadow: 0 4px 12px var(--color-shadow);
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
@@ -162,23 +161,23 @@ body {
 /* ===== Grid de pacientes ===== */
 .pacientes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 16px;
-    margin-top: 6px;
+    margin-top: 8px;
 }
 
-/* ===== Tarjeta de paciente ===== */
+/* ===== Tarjeta de paciente compacta ===== */
 .paciente-card {
     background: var(--color-card);
     border-radius: var(--border-radius);
     box-shadow: 0 4px 16px var(--color-shadow);
-    border-left: 5px solid var(--color-secondary);
+    border-left: 4px solid var(--color-secondary);
     overflow: hidden;
-    transition: var(--transition);
+    transition: transform var(--transition), box-shadow var(--transition);
     cursor: pointer;
 }
 .paciente-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow: 0 8px 24px rgba(60, 130, 180, 0.12);
 }
 
@@ -189,6 +188,7 @@ body {
     align-items: center;
     background: #f6faff;
     border-bottom: 1px solid var(--color-border);
+    font-size: 0.9rem;
 }
 .paciente-header .nombre {
     font-weight: 700;
@@ -199,7 +199,7 @@ body {
     background: var(--color-secondary);
     color: white;
     padding: 1px 10px;
-    border-radius: 20px;
+    border-radius: 30px;
     font-size: 0.7rem;
     font-weight: 600;
 }
@@ -207,15 +207,15 @@ body {
     color: var(--color-text-light);
     background: #e5f0f8;
     padding: 1px 10px;
-    border-radius: 20px;
+    border-radius: 30px;
     font-size: 0.75rem;
 }
 .paciente-header .badge {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     color: var(--color-text-light);
     background: var(--color-border);
     padding: 1px 10px;
-    border-radius: 20px;
+    border-radius: 30px;
 }
 .paciente-header .toggle-icon {
     color: var(--color-primary);
@@ -247,23 +247,22 @@ body {
     margin-bottom: 10px;
     padding-bottom: 6px;
     border-bottom: 1px dashed var(--color-border);
-}
-.ficha-header strong {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
 }
 .ficha-header .ult-act {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: var(--color-primary-dark);
     background: #e2eff8;
     padding: 2px 12px;
-    border-radius: 20px;
+    border-radius: 30px;
     font-weight: 600;
 }
 
+/* ===== Grid de la ficha: 3 columnas ===== */
 .ficha-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px 12px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px 12px;
 }
 .ficha-group {
     display: flex;
@@ -271,35 +270,38 @@ body {
 }
 .ficha-group label {
     font-weight: 600;
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
     color: var(--color-text-light);
-    margin-bottom: 1px;
     letter-spacing: 0.3px;
+    margin-bottom: 1px;
 }
 .ficha-group input,
 .ficha-group select,
 .ficha-group textarea {
     padding: 4px 8px;
     border: 1.5px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: 10px;
     font-family: var(--font-family);
     font-size: 0.8rem;
     background: white;
     transition: var(--transition);
+    width: 100%;
 }
 .ficha-group input:focus,
 .ficha-group select:focus,
 .ficha-group textarea:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(100, 170, 210, 0.1);
+    box-shadow: 0 0 0 2px rgba(100, 170, 210, 0.1);
 }
 .ficha-group input[readonly] {
     background: #f0f5f9;
     color: var(--color-text);
     cursor: default;
 }
+
+/* Checkbox + fecha en una línea */
 .ficha-check {
     flex-direction: row;
     align-items: center;
@@ -308,11 +310,19 @@ body {
 }
 .ficha-check label {
     margin-bottom: 0;
+    font-size: 0.65rem;
 }
 .ficha-check input[type="checkbox"] {
     width: 16px;
     height: 16px;
     accent-color: var(--color-secondary);
+}
+.ficha-check input[type="text"] {
+    width: auto;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    border-radius: 8px;
+    min-width: 70px;
 }
 
 .otros-container {
@@ -331,19 +341,21 @@ body {
     font-weight: 600;
     font-size: 0.7rem;
     color: var(--color-text-light);
+    text-transform: uppercase;
 }
-.otro-item {
+.otros-container .otro-item {
     display: flex;
     gap: 6px;
     align-items: center;
     margin-bottom: 4px;
     background: #f0f7fc;
-    padding: 4px 10px;
-    border-radius: 8px;
+    padding: 4px 8px;
+    border-radius: 10px;
+    font-size: 0.8rem;
 }
-.otro-item input {
+.otros-container .otro-item input {
     flex: 1;
-    padding: 3px 6px;
+    padding: 2px 6px;
     border: 1px solid var(--color-border);
     border-radius: 6px;
     font-size: 0.8rem;
@@ -366,7 +378,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(4px);
     display: none;
     justify-content: center;
@@ -379,18 +391,18 @@ body {
 
 .modal {
     background: white;
-    border-radius: 20px;
-    max-width: 600px;
+    border-radius: 24px;
+    max-width: 650px;
     width: 92%;
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
-    animation: fadeUp 0.25s ease;
+    animation: fadeUp 0.3s ease;
 }
 @keyframes fadeUp {
     from {
         opacity: 0;
-        transform: translateY(15px) scale(0.98);
+        transform: translateY(20px) scale(0.98);
     }
     to {
         opacity: 1;
@@ -404,7 +416,7 @@ body {
     align-items: center;
     padding: 14px 20px;
     background: var(--color-primary-light);
-    border-radius: 20px 20px 0 0;
+    border-radius: 24px 24px 0 0;
     border-bottom: 1px solid var(--color-border);
 }
 .modal-header h2 {
@@ -430,14 +442,14 @@ body {
 }
 
 .modal-body {
-    padding: 16px 20px;
+    padding: 18px;
 }
 
 /* ===== Formulario en modal ===== */
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px 16px;
+    gap: 12px 16px;
 }
 .form-group {
     display: flex;
@@ -451,13 +463,15 @@ body {
     font-size: 0.75rem;
     color: var(--color-text-light);
     margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 .form-group input,
 .form-group select,
 .form-group textarea {
     padding: 6px 10px;
     border: 1.5px solid var(--color-border);
-    border-radius: 10px;
+    border-radius: 12px;
     font-family: var(--font-family);
     font-size: 0.85rem;
     background: #f9fcff;
@@ -467,12 +481,12 @@ body {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(100, 170, 210, 0.12);
+    box-shadow: 0 0 0 2px rgba(100, 170, 210, 0.1);
 }
 .form-actions {
     grid-column: 1 / -1;
     display: flex;
-    gap: 10px;
+    gap: 12px;
     justify-content: flex-end;
     margin-top: 6px;
 }
@@ -494,8 +508,8 @@ body {
     border-radius: 30px;
     font-weight: 600;
     font-size: 0.9rem;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-    animation: slideIn 0.35s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s ease;
     max-width: 350px;
 }
 .toast.success {
@@ -519,45 +533,19 @@ body {
     }
 }
 
-/* ===== Empty message ===== */
-.empty-message {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 40px 20px;
-    border-radius: 24px;
-    text-align: center;
-    color: var(--color-text-light);
-    font-size: 1rem;
-    border: 2px dashed var(--color-border);
-}
-.empty-message i {
-    font-size: 2.5rem;
-    display: block;
-    margin-bottom: 12px;
-    color: var(--color-secondary);
-}
-
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
-    body {
-        padding: 10px;
-    }
-    .header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-        padding: 12px 16px;
-    }
-    .header-actions {
-        justify-content: center;
-    }
     .pacientes-grid {
         grid-template-columns: 1fr;
     }
     .ficha-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
     }
     .form-grid {
         grid-template-columns: 1fr;
+    }
+    .header h1 {
+        font-size: 1.3rem;
     }
     .search-bar {
         max-width: 100%;
@@ -565,13 +553,27 @@ body {
 }
 @media (max-width: 480px) {
     body {
-        padding: 8px;
+        padding: 10px;
+    }
+    .header {
+        padding: 10px 16px;
     }
     .header h1 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+    }
+    .ficha-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+    .paciente-ficha {
+        padding: 8px 10px;
+    }
+    .paciente-header {
+        font-size: 0.8rem;
+        padding: 8px 10px;
     }
     .modal {
-        padding: 0;
+        width: 98%;
     }
     .modal-body {
         padding: 12px;
