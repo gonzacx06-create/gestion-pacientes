@@ -7,7 +7,7 @@ let filtro = '';
 
 // ===== DOM references =====
 const container = document.getElementById('pacientesContainer');
-const modal = document.getElementById('modalPaciente');
+const modalPaciente = document.getElementById('modalPaciente');
 const modalTitulo = document.getElementById('modalTitulo');
 const formPaciente = document.getElementById('formPaciente');
 const btnCerrarModal = document.getElementById('btnCerrarModal');
@@ -17,7 +17,13 @@ const inputBuscar = document.getElementById('inputBuscar');
 const btnLimpiarBusqueda = document.getElementById('btnLimpiarBusqueda');
 const toastContainer = document.getElementById('toastContainer');
 
+// Nuevo modal para la ficha (detalle del paciente)
+const modalFicha = document.getElementById('modalFicha');
+const modalFichaBody = document.getElementById('modalFichaBody');
+const btnCerrarFicha = document.getElementById('btnCerrarFicha');
+
 let pacienteEditandoId = null;
+let pacienteActualId = null; // Para la ficha modal
 
 // ===== Funciones auxiliares =====
 function generarId() {
@@ -47,7 +53,7 @@ function mostrarToast(mensaje, tipo = 'info') {
     }, 3000);
 }
 
-// ===== Renderizado =====
+// ===== Renderizado de la lista de pacientes (solo encabezados) =====
 function renderPacientes() {
     let lista = pacientes;
     if (filtro.trim() !== '') {
@@ -74,18 +80,15 @@ function renderPacientes() {
         const camaDisplay = p.cama ? `Cama ${p.cama}` : 'Sin cama';
 
         html += `
-            <div class="${cardClass}" data-id="${p.id}">
-                <div class="paciente-header" onclick="toggleFicha('${p.id}')">
+            <div class="${cardClass}" data-id="${p.id}" onclick="abrirFichaModal('${p.id}')">
+                <div class="paciente-header">
                     <div class="info">
                         <span class="nombre"><i class="fas fa-user-circle"></i> ${escapeHtml(nombreCompleto)}</span>
                         <span class="cama-badge">${camaDisplay}</span>
                         <span class="dni"><i class="far fa-id-card"></i> ${escapeHtml(p.dni)}</span>
                         <span class="badge"><i class="far fa-clock"></i> ${ultima}</span>
                     </div>
-                    <span class="toggle-icon"><i class="fas fa-chevron-down" id="icon-${p.id}"></i></span>
-                </div>
-                <div class="paciente-ficha" id="ficha-${p.id}">
-                    ${renderFicha(p)}
+                    <span class="toggle-icon"><i class="fas fa-chevron-right"></i></span>
                 </div>
             </div>
         `;
@@ -94,146 +97,168 @@ function renderPacientes() {
     container.innerHTML = html;
 }
 
-// ===== Función para renderizar la ficha editable =====
-function renderFicha(p) {
+// ===== Renderizado de la ficha dentro del modal =====
+function renderFichaModal(p) {
     const otrosHtml = (p.otros || []).map((otro, idx) => `
         <div class="otro-item" data-otro-idx="${idx}">
             <input type="text" class="otro-nombre" value="${escapeHtml(otro.nombre)}" placeholder="Nombre" />
             <input type="text" class="otro-valor" value="${escapeHtml(otro.valor)}" placeholder="Valor" />
-            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarOtroFicha('${p.id}', ${idx})"><i class="fas fa-times"></i></button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarOtroFichaModal(${idx})"><i class="fas fa-times"></i></button>
         </div>
     `).join('');
 
     const fechaIngresoDisplay = p.fechaingreso || 'No registrada';
 
     return `
-        <div class="ficha-header">
+        <div class="ficha-header-modal">
             <div><strong>${escapeHtml(p.nombre)} ${escapeHtml(p.apellido)}</strong> · DNI ${escapeHtml(p.dni)}</div>
             <div class="ult-act"><i class="fas fa-sync-alt"></i> ${p.ultimaactualizacion || p.fechaingreso}</div>
         </div>
-        <div class="ficha-grid" id="fichaGrid-${p.id}">
+        <div class="ficha-grid-modal" id="fichaGridModal">
             <div class="ficha-group">
                 <label>Fecha ingreso</label>
                 <input type="text" readonly value="${escapeHtml(fechaIngresoDisplay)}" />
             </div>
             <div class="ficha-group">
                 <label>N° cama</label>
-                <input type="number" class="ficha-input" data-field="cama" value="${p.cama ?? ''}" min="1" step="1" />
+                <input type="number" class="ficha-input-modal" data-field="cama" value="${p.cama ?? ''}" min="1" step="1" />
             </div>
             <div class="ficha-group">
                 <label>Nombre</label>
-                <input type="text" class="ficha-input" data-field="nombre" value="${escapeHtml(p.nombre)}" />
+                <input type="text" class="ficha-input-modal" data-field="nombre" value="${escapeHtml(p.nombre)}" />
             </div>
             <div class="ficha-group">
                 <label>Apellido</label>
-                <input type="text" class="ficha-input" data-field="apellido" value="${escapeHtml(p.apellido)}" />
+                <input type="text" class="ficha-input-modal" data-field="apellido" value="${escapeHtml(p.apellido)}" />
             </div>
             <div class="ficha-group">
                 <label>DNI</label>
-                <input type="text" class="ficha-input" data-field="dni" value="${escapeHtml(p.dni)}" />
+                <input type="text" class="ficha-input-modal" data-field="dni" value="${escapeHtml(p.dni)}" />
             </div>
             <div class="ficha-group">
                 <label>Obra Social</label>
-                <input type="text" class="ficha-input" data-field="obrasocial" value="${escapeHtml(p.obrasocial)}" />
+                <input type="text" class="ficha-input-modal" data-field="obrasocial" value="${escapeHtml(p.obrasocial)}" />
             </div>
             <div class="ficha-group">
                 <label>Motivo Ingreso</label>
-                <input type="text" class="ficha-input" data-field="motivoingreso" value="${escapeHtml(p.motivoingreso)}" />
+                <input type="text" class="ficha-input-modal" data-field="motivoingreso" value="${escapeHtml(p.motivoingreso)}" />
             </div>
             <div class="ficha-group">
                 <label>Sedación</label>
-                <input type="text" class="ficha-input" data-field="sedacion" value="${escapeHtml(p.sedacion)}" />
+                <input type="text" class="ficha-input-modal" data-field="sedacion" value="${escapeHtml(p.sedacion)}" />
             </div>
             <div class="ficha-group">
                 <label>Estudios Pendientes</label>
-                <input type="text" class="ficha-input" data-field="estudiospendientes" value="${escapeHtml(p.estudiospendientes)}" />
+                <input type="text" class="ficha-input-modal" data-field="estudiospendientes" value="${escapeHtml(p.estudiospendientes)}" />
             </div>
             <div class="ficha-group ficha-check">
                 <label>Vía Central</label>
-                <input type="checkbox" class="ficha-checkbox" data-field="viacentral" ${p.viacentral ? 'checked' : ''} />
-                <input type="text" class="ficha-text-date" data-field="fechaviacentral" value="${escapeHtml(p.fechaviacentral)}" placeholder="dd/mm/aaaa" />
+                <input type="checkbox" class="ficha-checkbox-modal" data-field="viacentral" ${p.viacentral ? 'checked' : ''} />
+                <input type="text" class="ficha-text-date-modal" data-field="fechaviacentral" value="${escapeHtml(p.fechaviacentral)}" placeholder="dd/mm/aaaa" />
             </div>
             <div class="ficha-group ficha-check">
                 <label>Sonda Vesical</label>
-                <input type="checkbox" class="ficha-checkbox" data-field="sondavesical" ${p.sondavesical ? 'checked' : ''} />
-                <input type="text" class="ficha-text-date" data-field="fechasondavesical" value="${escapeHtml(p.fechasondavesical)}" placeholder="dd/mm/aaaa" />
+                <input type="checkbox" class="ficha-checkbox-modal" data-field="sondavesical" ${p.sondavesical ? 'checked' : ''} />
+                <input type="text" class="ficha-text-date-modal" data-field="fechasondavesical" value="${escapeHtml(p.fechasondavesical)}" placeholder="dd/mm/aaaa" />
             </div>
             <div class="ficha-group">
                 <label>Drenajes</label>
-                <input type="text" class="ficha-input" data-field="drenajes" value="${escapeHtml(p.drenajes)}" />
+                <input type="text" class="ficha-input-modal" data-field="drenajes" value="${escapeHtml(p.drenajes)}" />
             </div>
             <div class="ficha-group">
                 <label>Cirugías</label>
-                <input type="text" class="ficha-input" data-field="cirugias" value="${escapeHtml(p.cirugias)}" />
+                <input type="text" class="ficha-input-modal" data-field="cirugias" value="${escapeHtml(p.cirugias)}" />
             </div>
             <div class="ficha-group">
                 <label>Cultivos</label>
-                <input type="text" class="ficha-input" data-field="cultivos" value="${escapeHtml(p.cultivos)}" />
+                <input type="text" class="ficha-input-modal" data-field="cultivos" value="${escapeHtml(p.cultivos)}" />
             </div>
             <div class="ficha-group">
                 <label>Catarsis</label>
-                <input type="text" class="ficha-input" data-field="catarsis" value="${escapeHtml(p.catarsis)}" />
+                <input type="text" class="ficha-input-modal" data-field="catarsis" value="${escapeHtml(p.catarsis)}" />
             </div>
             <div class="ficha-group">
                 <label>Alim. Oral</label>
-                <input type="text" class="ficha-input" data-field="alimentacionoral" value="${escapeHtml(p.alimentacionoral)}" />
+                <input type="text" class="ficha-input-modal" data-field="alimentacionoral" value="${escapeHtml(p.alimentacionoral)}" />
             </div>
             <div class="ficha-group">
                 <label>Alim. Enteral</label>
-                <input type="text" class="ficha-input" data-field="alimentacionenteral" value="${escapeHtml(p.alimentacionenteral)}" />
+                <input type="text" class="ficha-input-modal" data-field="alimentacionenteral" value="${escapeHtml(p.alimentacionenteral)}" />
             </div>
             <div class="ficha-group">
                 <label>Alim. Parenteral</label>
-                <input type="text" class="ficha-input" data-field="alimentacionparenteral" value="${escapeHtml(p.alimentacionparenteral)}" />
+                <input type="text" class="ficha-input-modal" data-field="alimentacionparenteral" value="${escapeHtml(p.alimentacionparenteral)}" />
             </div>
             <div class="ficha-group">
                 <label>Alergias</label>
-                <input type="text" class="ficha-input" data-field="alergias" value="${escapeHtml(p.alergias)}" />
+                <input type="text" class="ficha-input-modal" data-field="alergias" value="${escapeHtml(p.alergias)}" />
             </div>
-            <div class="otros-container">
+            <div class="otros-container-modal">
                 <div class="otros-header">
                     <i class="fas fa-ellipsis-h"></i>
                     <label>Otros</label>
                 </div>
-                <div id="otrosFicha-${p.id}">
+                <div id="otrosFichaModal">
                     ${otrosHtml}
                 </div>
-                <button type="button" class="btn btn-soft btn-sm" onclick="agregarOtroFicha('${p.id}')" style="margin-top:4px;">
-                    <i class="fas fa-plus"></i> Agregar
-                </button>
+                <button type="button" class="btn btn-soft btn-sm" onclick="agregarOtroFichaModal()"><i class="fas fa-plus"></i> Agregar</button>
             </div>
-            <div class="ficha-actions">
-                <button class="btn btn-success btn-sm" onclick="guardarFicha('${p.id}')"><i class="fas fa-save"></i> Guardar</button>
-                <button class="btn btn-danger btn-sm" onclick="eliminarPaciente('${p.id}')"><i class="fas fa-user-times"></i> Alta</button>
+            <div class="ficha-actions-modal">
+                <button class="btn btn-success btn-sm" onclick="guardarFichaModal()"><i class="fas fa-save"></i> Guardar cambios</button>
+                <button class="btn btn-danger btn-sm" onclick="eliminarPacienteModal()"><i class="fas fa-user-times"></i> Dar de alta</button>
             </div>
         </div>
     `;
 }
 
-// ===== Funciones globales para el onclick =====
-window.toggleFicha = function(id) {
-    const ficha = document.getElementById(`ficha-${id}`);
-    const icon = document.getElementById(`icon-${id}`);
-    if (!ficha) return;
-    const isOpen = ficha.classList.contains('open');
-    if (isOpen) {
-        ficha.classList.remove('open');
-        icon.className = 'fas fa-chevron-down';
-    } else {
-        ficha.classList.add('open');
-        icon.className = 'fas fa-chevron-up';
-    }
+// ===== Funciones del modal de ficha =====
+window.abrirFichaModal = function(id) {
+    const p = pacientes.find(p => p.id === id);
+    if (!p) { mostrarToast('Paciente no encontrado', 'error'); return; }
+    pacienteActualId = id;
+    modalFichaBody.innerHTML = renderFichaModal(p);
+    modalFicha.classList.add('active');
 };
 
-window.guardarFicha = async function(id) {
+function cerrarFichaModal() {
+    modalFicha.classList.remove('active');
+    modalFichaBody.innerHTML = '';
+    pacienteActualId = null;
+}
+
+// Funciones para manipular "Otros" dentro del modal de ficha
+window.agregarOtroFichaModal = function() {
+    const container = document.getElementById('otrosFichaModal');
+    if (!container) return;
+    const div = document.createElement('div');
+    div.className = 'otro-item';
+    div.innerHTML = `
+        <input type="text" class="otro-nombre" placeholder="Nombre" />
+        <input type="text" class="otro-valor" placeholder="Valor" />
+        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+    `;
+    container.appendChild(div);
+};
+
+window.eliminarOtroFichaModal = function(idx) {
+    const container = document.getElementById('otrosFichaModal');
+    if (!container) return;
+    const items = container.querySelectorAll('.otro-item');
+    if (items[idx]) items[idx].remove();
+};
+
+// Guardar cambios desde el modal de ficha
+window.guardarFichaModal = async function() {
+    const id = pacienteActualId;
+    if (!id) { mostrarToast('Error: no hay paciente seleccionado', 'error'); return; }
     const index = pacientes.findIndex(p => p.id === id);
     if (index === -1) { mostrarToast('Paciente no encontrado', 'error'); return; }
     const p = pacientes[index];
-    const grid = document.getElementById(`fichaGrid-${id}`);
+    const grid = document.getElementById('fichaGridModal');
     if (!grid) return;
 
     // Recolectar datos
-    const inputs = grid.querySelectorAll('.ficha-input');
+    const inputs = grid.querySelectorAll('.ficha-input-modal');
     inputs.forEach(input => {
         const field = input.dataset.field;
         if (field) {
@@ -245,20 +270,20 @@ window.guardarFicha = async function(id) {
         }
     });
 
-    const checkboxes = grid.querySelectorAll('.ficha-checkbox');
+    const checkboxes = grid.querySelectorAll('.ficha-checkbox-modal');
     checkboxes.forEach(cb => {
         const field = cb.dataset.field;
         if (field) p[field] = cb.checked;
     });
 
-    const textDates = grid.querySelectorAll('.ficha-text-date');
+    const textDates = grid.querySelectorAll('.ficha-text-date-modal');
     textDates.forEach(td => {
         const field = td.dataset.field;
         if (field) p[field] = td.value.trim();
     });
 
     // Otros
-    const otrosContainer = document.getElementById(`otrosFicha-${id}`);
+    const otrosContainer = document.getElementById('otrosFichaModal');
     if (otrosContainer) {
         const items = otrosContainer.querySelectorAll('.otro-item');
         const nuevosOtros = [];
@@ -277,24 +302,22 @@ window.guardarFicha = async function(id) {
 
     try {
         await savePacientes(pacientes);
-        const ultSpan = document.getElementById(`ultAct-${id}`);
-        if (ultSpan) ultSpan.textContent = p.ultimaactualizacion;
         mostrarToast('Cambios guardados correctamente', 'success');
-        renderPacientes();
-        setTimeout(() => {
-            const ficha = document.getElementById(`ficha-${id}`);
-            if (ficha) ficha.classList.add('open');
-        }, 50);
+        cerrarFichaModal();
+        renderPacientes(); // refrescar lista
     } catch (error) {
         mostrarToast('Error al guardar: ' + error.message, 'error');
     }
 };
 
-window.eliminarPaciente = async function(id) {
+window.eliminarPacienteModal = async function() {
+    const id = pacienteActualId;
+    if (!id) return;
     if (!confirm('¿Dar de alta / eliminar este paciente?')) return;
     try {
         await deletePaciente(id);
         pacientes = pacientes.filter(p => p.id !== id);
+        cerrarFichaModal();
         renderPacientes();
         mostrarToast('Paciente eliminado', 'info');
     } catch (error) {
@@ -302,31 +325,7 @@ window.eliminarPaciente = async function(id) {
     }
 };
 
-window.agregarOtroFicha = function(id) {
-    const container = document.getElementById(`otrosFicha-${id}`);
-    if (!container) return;
-    const div = document.createElement('div');
-    div.className = 'otro-item';
-    div.innerHTML = `
-        <input type="text" class="otro-nombre" placeholder="Nombre" />
-        <input type="text" class="otro-valor" placeholder="Valor" />
-        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
-    `;
-    container.appendChild(div);
-};
-
-window.eliminarOtroFicha = function(id, idx) {
-    const p = pacientes.find(p => p.id === id);
-    if (!p) return;
-    p.otros.splice(idx, 1);
-    const fichaDiv = document.getElementById(`ficha-${id}`);
-    if (fichaDiv) {
-        fichaDiv.innerHTML = renderFicha(p);
-        fichaDiv.classList.add('open');
-    }
-};
-
-// ===== Modal =====
+// ===== Modal de nuevo ingreso / edición (sin cambios) =====
 function abrirModal(paciente = null) {
     pacienteEditandoId = paciente ? paciente.id : null;
     if (paciente) {
@@ -336,11 +335,11 @@ function abrirModal(paciente = null) {
         modalTitulo.innerHTML = '<i class="fas fa-user-plus"></i> Nuevo ingreso';
         formPaciente.innerHTML = generarFormulario(null);
     }
-    modal.classList.add('active');
+    modalPaciente.classList.add('active');
 }
 
 function cerrarModal() {
-    modal.classList.remove('active');
+    modalPaciente.classList.remove('active');
     formPaciente.innerHTML = '';
     pacienteEditandoId = null;
 }
@@ -462,10 +461,9 @@ window.agregarOtroModal = function() {
     container.appendChild(div);
 };
 
-// ===== Evento submit del formulario modal =====
+// Enviar formulario modal (nuevo ingreso / edición)
 formPaciente.addEventListener('submit', async function(e) {
     e.preventDefault();
-    // Recolectar datos del modal
     const fechaHora = document.getElementById('fechaIngresoModal').value;
     if (!fechaHora) { mostrarToast('Complete la fecha y hora de ingreso', 'warning'); return; }
     const fechaObj = new Date(fechaHora);
@@ -535,12 +533,8 @@ formPaciente.addEventListener('submit', async function(e) {
 
     if (pacienteEditandoId) {
         const index = pacientes.findIndex(p => p.id === pacienteEditandoId);
-        if (index !== -1) {
-            pacientes[index] = pacienteData;
-        } else {
-            mostrarToast('Paciente no encontrado', 'error');
-            return;
-        }
+        if (index !== -1) pacientes[index] = pacienteData;
+        else { mostrarToast('Paciente no encontrado', 'error'); return; }
     } else {
         pacientes.push(pacienteData);
     }
@@ -558,7 +552,10 @@ formPaciente.addEventListener('submit', async function(e) {
 // ===== Eventos =====
 btnNuevo.addEventListener('click', () => abrirModal(null));
 btnCerrarModal.addEventListener('click', cerrarModal);
-modal.addEventListener('click', (e) => { if (e.target === modal) cerrarModal(); });
+modalPaciente.addEventListener('click', (e) => { if (e.target === modalPaciente) cerrarModal(); });
+
+btnCerrarFicha.addEventListener('click', cerrarFichaModal);
+modalFicha.addEventListener('click', (e) => { if (e.target === modalFicha) cerrarFichaModal(); });
 
 btnCambiarVista.addEventListener('click', () => {
     viewMode = (viewMode === 'grid') ? 'list' : 'grid';

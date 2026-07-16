@@ -579,3 +579,159 @@ body {
         padding: 12px;
     }
 }
+
+/* ===== Modal de ficha (pop-up centrado) ===== */
+.modal-ficha {
+    max-width: 900px;
+    width: 95%;
+}
+
+.modal-ficha .modal-body {
+    padding: 20px 24px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Grid de la ficha dentro del modal (2 columnas para mejor visualización) */
+.ficha-grid-modal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 20px;
+}
+.ficha-grid-modal .ficha-group {
+    display: flex;
+    flex-direction: column;
+}
+.ficha-grid-modal .ficha-group label {
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--color-text-light);
+    letter-spacing: 0.3px;
+    margin-bottom: 2px;
+}
+.ficha-grid-modal .ficha-group input,
+.ficha-grid-modal .ficha-group select,
+.ficha-grid-modal .ficha-group textarea {
+    padding: 6px 10px;
+    border: 1.5px solid var(--color-border);
+    border-radius: 10px;
+    font-family: var(--font-family);
+    font-size: 0.85rem;
+    background: white;
+    width: 100%;
+}
+.ficha-grid-modal .ficha-group input:focus,
+.ficha-grid-modal .ficha-group select:focus,
+.ficha-grid-modal .ficha-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(100, 170, 210, 0.1);
+}
+.ficha-grid-modal .ficha-group input[readonly] {
+    background: #f0f5f9;
+    cursor: default;
+}
+
+.ficha-grid-modal .ficha-check {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.ficha-grid-modal .ficha-check label {
+    margin-bottom: 0;
+}
+.ficha-grid-modal .ficha-check input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-secondary);
+}
+.ficha-grid-modal .ficha-check input[type="text"] {
+    width: auto;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    min-width: 80px;
+}
+
+.ficha-header-modal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px dashed var(--color-border);
+    font-size: 0.95rem;
+}
+.ficha-header-modal .ult-act {
+    font-size: 0.8rem;
+    color: var(--color-primary-dark);
+    background: #e2eff8;
+    padding: 4px 16px;
+    border-radius: 30px;
+    font-weight: 600;
+}
+
+.otros-container-modal {
+    grid-column: 1 / -1;
+    margin-top: 8px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 12px;
+}
+.otros-container-modal .otros-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+.otros-container-modal .otros-header label {
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--color-text-light);
+}
+.otros-container-modal .otro-item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 6px;
+    background: #f0f7fc;
+    padding: 4px 10px;
+    border-radius: 10px;
+}
+.otros-container-modal .otro-item input {
+    flex: 1;
+    padding: 4px 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.ficha-actions-modal {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-border);
+}
+
+/* Responsive para el modal de ficha */
+@media (max-width: 768px) {
+    .modal-ficha {
+        max-width: 100%;
+        width: 98%;
+        margin: 10px;
+    }
+    .ficha-grid-modal {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .ficha-header-modal {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}

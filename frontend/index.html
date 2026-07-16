@@ -24,6 +24,7 @@
 
     <main id="pacientesContainer" class="pacientes-grid"></main>
 
+    <!-- Modal para nuevo ingreso / edición -->
     <div class="modal-overlay" id="modalPaciente">
         <div class="modal">
             <div class="modal-header">
@@ -32,6 +33,19 @@
             </div>
             <div class="modal-body">
                 <form id="formPaciente"></form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver/editar ficha del paciente (pop-up) -->
+    <div class="modal-overlay" id="modalFicha">
+        <div class="modal modal-ficha">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-md"></i> Ficha del paciente</h2>
+                <button class="btn-close-modal" id="btnCerrarFicha"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modalFichaBody">
+                <!-- Aquí se inyecta la ficha -->
             </div>
         </div>
     </div>
