@@ -1,4 +1,4 @@
-/* ===== Variables mejoradas ===== */
+/* ===== Variables ===== */
 :root {
     --color-primary: #6a9bb5;
     --color-primary-dark: #4f84a0;
@@ -15,8 +15,8 @@
     --color-warning: #b8863a;
     --color-error: #c0392b;
     --font-family: 'Nunito', sans-serif;
-    --border-radius: 16px;
-    --transition: 0.25s ease;
+    --border-radius: 12px;
+    --transition: 0.2s ease;
 }
 
 /* ===== Reset y global ===== */
@@ -30,8 +30,9 @@ body {
     font-family: var(--font-family);
     background: var(--color-bg);
     color: var(--color-text);
-    padding: 20px;
+    padding: 16px;
     min-height: 100vh;
+    font-size: 14px;
 }
 
 /* ===== Header ===== */
@@ -40,50 +41,50 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 12px;
     background: linear-gradient(135deg, var(--color-primary-light), #d4e8f2);
-    padding: 20px 30px;
-    border-radius: 30px;
-    border-left: 8px solid var(--color-secondary);
-    box-shadow: 0 10px 30px var(--color-shadow);
+    padding: 14px 24px;
+    border-radius: 24px;
+    border-left: 6px solid var(--color-secondary);
+    box-shadow: 0 6px 20px var(--color-shadow);
     backdrop-filter: blur(4px);
     border: 1px solid rgba(255, 255, 255, 0.5);
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .header h1 {
     font-weight: 700;
-    font-size: 1.9rem;
+    font-size: 1.5rem;
     color: #154a60;
 }
 .header h1 i {
     color: var(--color-secondary);
-    margin-right: 12px;
+    margin-right: 10px;
 }
 
 .header-actions {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
-/* ===== Botones con degradados ===== */
+/* ===== Botones ===== */
 .btn {
-    padding: 10px 24px;
+    padding: 8px 18px;
     border: none;
-    border-radius: 40px;
+    border-radius: 30px;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: var(--transition);
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 14px rgba(106, 155, 181, 0.25);
+    gap: 6px;
+    box-shadow: 0 3px 10px rgba(106, 155, 181, 0.2);
 }
 .btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(106, 155, 181, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(106, 155, 181, 0.3);
 }
 
 .btn-primary {
@@ -94,14 +95,6 @@ body {
     background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
 }
 
-.btn-secondary {
-    background: linear-gradient(135deg, var(--color-secondary), var(--color-secondary-dark));
-    color: white;
-}
-.btn-secondary:hover {
-    background: linear-gradient(135deg, var(--color-secondary-dark), var(--color-secondary));
-}
-
 .btn-outline {
     background: transparent;
     border: 2px solid var(--color-border);
@@ -109,7 +102,7 @@ body {
     box-shadow: none;
 }
 .btn-outline:hover {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.5);
     border-color: var(--color-primary);
 }
 
@@ -140,20 +133,20 @@ body {
 }
 
 .btn-sm {
-    padding: 6px 16px;
-    font-size: 0.85rem;
+    padding: 4px 12px;
+    font-size: 0.8rem;
 }
 
 /* ===== Search bar ===== */
 .search-bar {
     display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
+    gap: 10px;
+    margin-bottom: 18px;
     background: white;
-    padding: 12px 20px;
-    border-radius: 40px;
-    box-shadow: 0 4px 12px var(--color-shadow);
-    max-width: 600px;
+    padding: 8px 16px;
+    border-radius: 30px;
+    box-shadow: 0 3px 10px var(--color-shadow);
+    max-width: 500px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -162,35 +155,35 @@ body {
     border: none;
     outline: none;
     font-family: var(--font-family);
-    font-size: 1rem;
+    font-size: 0.95rem;
     background: transparent;
 }
 
 /* ===== Grid de pacientes ===== */
 .pacientes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 24px;
-    margin-top: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 6px;
 }
 
 /* ===== Tarjeta de paciente ===== */
 .paciente-card {
     background: var(--color-card);
     border-radius: var(--border-radius);
-    box-shadow: 0 8px 24px var(--color-shadow);
-    border-left: 6px solid var(--color-secondary);
+    box-shadow: 0 4px 16px var(--color-shadow);
+    border-left: 5px solid var(--color-secondary);
     overflow: hidden;
-    transition: transform var(--transition), box-shadow var(--transition);
+    transition: var(--transition);
     cursor: pointer;
 }
 .paciente-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(60, 130, 180, 0.12);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(60, 130, 180, 0.12);
 }
 
 .paciente-header {
-    padding: 16px 20px;
+    padding: 10px 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -199,51 +192,51 @@ body {
 }
 .paciente-header .nombre {
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #154a60;
 }
 .paciente-header .cama-badge {
     background: var(--color-secondary);
     color: white;
-    padding: 2px 12px;
-    border-radius: 30px;
-    font-size: 0.8rem;
+    padding: 1px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
     font-weight: 600;
 }
 .paciente-header .dni {
     color: var(--color-text-light);
     background: #e5f0f8;
-    padding: 2px 14px;
-    border-radius: 30px;
-    font-size: 0.85rem;
+    padding: 1px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
 }
 .paciente-header .badge {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: var(--color-text-light);
     background: var(--color-border);
-    padding: 2px 14px;
-    border-radius: 30px;
+    padding: 1px 10px;
+    border-radius: 20px;
 }
 .paciente-header .toggle-icon {
     color: var(--color-primary);
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
-/* ===== Ficha desplegable con transición suave ===== */
+/* ===== Ficha desplegable compacta ===== */
 .paciente-ficha {
-    padding: 20px;
+    padding: 12px 14px;
     background: #f8fcff;
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
+    transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.3s ease;
     border-top: 1px solid var(--color-border);
-    padding: 0 20px;
+    padding: 0 14px;
 }
 .paciente-ficha.open {
-    max-height: 3000px;
+    max-height: 2500px;
     opacity: 1;
-    padding: 20px;
+    padding: 12px 14px;
 }
 
 .ficha-header {
@@ -251,23 +244,26 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    margin-bottom: 16px;
-    padding-bottom: 10px;
-    border-bottom: 2px dashed var(--color-border);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed var(--color-border);
+}
+.ficha-header strong {
+    font-size: 0.95rem;
 }
 .ficha-header .ult-act {
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     color: var(--color-primary-dark);
     background: #e2eff8;
-    padding: 4px 16px;
-    border-radius: 40px;
+    padding: 2px 12px;
+    border-radius: 20px;
     font-weight: 600;
 }
 
 .ficha-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px 20px;
+    gap: 6px 12px;
 }
 .ficha-group {
     display: flex;
@@ -275,19 +271,20 @@ body {
 }
 .ficha-group label {
     font-weight: 600;
-    font-size: 0.75rem;
+    font-size: 0.6rem;
     text-transform: uppercase;
     color: var(--color-text-light);
-    margin-bottom: 2px;
+    margin-bottom: 1px;
+    letter-spacing: 0.3px;
 }
 .ficha-group input,
 .ficha-group select,
 .ficha-group textarea {
-    padding: 6px 10px;
-    border: 2px solid var(--color-border);
-    border-radius: 12px;
+    padding: 4px 8px;
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
     font-family: var(--font-family);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     background: white;
     transition: var(--transition);
 }
@@ -306,59 +303,71 @@ body {
 .ficha-check {
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
     flex-wrap: wrap;
 }
 .ficha-check label {
     margin-bottom: 0;
 }
 .ficha-check input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     accent-color: var(--color-secondary);
 }
 
 .otros-container {
     grid-column: 1 / -1;
-    margin-top: 10px;
+    margin-top: 6px;
     border-top: 1px solid var(--color-border);
-    padding-top: 14px;
+    padding-top: 8px;
+}
+.otros-container .otros-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+.otros-container .otros-header label {
+    font-weight: 600;
+    font-size: 0.7rem;
+    color: var(--color-text-light);
 }
 .otro-item {
     display: flex;
-    gap: 10px;
+    gap: 6px;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     background: #f0f7fc;
-    padding: 6px 12px;
-    border-radius: 12px;
+    padding: 4px 10px;
+    border-radius: 8px;
 }
 .otro-item input {
     flex: 1;
-    padding: 4px 8px;
+    padding: 3px 6px;
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
 }
 
 .ficha-actions {
     grid-column: 1 / -1;
     display: flex;
-    gap: 12px;
+    gap: 8px;
     flex-wrap: wrap;
-    margin-top: 16px;
-    padding-top: 14px;
+    margin-top: 10px;
+    padding-top: 8px;
     border-top: 1px solid var(--color-border);
 }
 
-/* ===== Modal mejorado ===== */
+/* ===== Modal compacto ===== */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
     display: none;
     justify-content: center;
     align-items: center;
@@ -370,18 +379,18 @@ body {
 
 .modal {
     background: white;
-    border-radius: 28px;
-    max-width: 700px;
-    width: 90%;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 92%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.15);
-    animation: fadeUp 0.3s ease;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    animation: fadeUp 0.25s ease;
 }
 @keyframes fadeUp {
     from {
         opacity: 0;
-        transform: translateY(20px) scale(0.98);
+        transform: translateY(15px) scale(0.98);
     }
     to {
         opacity: 1;
@@ -393,23 +402,24 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 28px;
+    padding: 14px 20px;
     background: var(--color-primary-light);
-    border-radius: 28px 28px 0 0;
-    border-bottom: 2px solid var(--color-border);
+    border-radius: 20px 20px 0 0;
+    border-bottom: 1px solid var(--color-border);
 }
 .modal-header h2 {
     font-weight: 700;
+    font-size: 1.2rem;
     color: #154a60;
 }
 .modal-header h2 i {
     color: var(--color-secondary);
-    margin-right: 8px;
+    margin-right: 6px;
 }
 .btn-close-modal {
     background: none;
     border: none;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: #888;
     cursor: pointer;
     transition: var(--transition);
@@ -420,14 +430,14 @@ body {
 }
 
 .modal-body {
-    padding: 28px;
+    padding: 16px 20px;
 }
 
 /* ===== Formulario en modal ===== */
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px 24px;
+    gap: 10px 16px;
 }
 .form-group {
     display: flex;
@@ -438,18 +448,18 @@ body {
 }
 .form-group label {
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--color-text-light);
     margin-bottom: 2px;
 }
 .form-group input,
 .form-group select,
 .form-group textarea {
-    padding: 8px 12px;
-    border: 2px solid var(--color-border);
-    border-radius: 14px;
+    padding: 6px 10px;
+    border: 1.5px solid var(--color-border);
+    border-radius: 10px;
     font-family: var(--font-family);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     background: #f9fcff;
 }
 .form-group input:focus,
@@ -457,35 +467,36 @@ body {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(100, 170, 210, 0.15);
+    box-shadow: 0 0 0 3px rgba(100, 170, 210, 0.12);
 }
 .form-actions {
     grid-column: 1 / -1;
     display: flex;
-    gap: 16px;
+    gap: 10px;
     justify-content: flex-end;
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 /* ===== Toast ===== */
 #toastContainer {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
+    bottom: 20px;
+    right: 20px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     z-index: 2000;
 }
 .toast {
     background: var(--color-primary-dark);
     color: white;
-    padding: 14px 24px;
-    border-radius: 40px;
+    padding: 10px 20px;
+    border-radius: 30px;
     font-weight: 600;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    animation: slideIn 0.4s ease;
-    max-width: 400px;
+    font-size: 0.9rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    animation: slideIn 0.35s ease;
+    max-width: 350px;
 }
 .toast.success {
     background: var(--color-success);
@@ -500,7 +511,7 @@ body {
 @keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateX(40px);
+        transform: translateX(30px);
     }
     to {
         opacity: 1;
@@ -508,12 +519,33 @@ body {
     }
 }
 
+/* ===== Empty message ===== */
+.empty-message {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 40px 20px;
+    border-radius: 24px;
+    text-align: center;
+    color: var(--color-text-light);
+    font-size: 1rem;
+    border: 2px dashed var(--color-border);
+}
+.empty-message i {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 12px;
+    color: var(--color-secondary);
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
     .header {
         flex-direction: column;
         align-items: stretch;
-        gap: 12px;
+        gap: 10px;
+        padding: 12px 16px;
     }
     .header-actions {
         justify-content: center;
@@ -533,15 +565,15 @@ body {
 }
 @media (max-width: 480px) {
     body {
-        padding: 10px;
+        padding: 8px;
     }
     .header h1 {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
     .modal {
         padding: 0;
     }
     .modal-body {
-        padding: 16px;
+        padding: 12px;
     }
 }
