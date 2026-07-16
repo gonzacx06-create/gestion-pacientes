@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ===== CONFIGURACIÓN DE SUPABASE (variables de entorno) =====
+// ===== CONFIGURACIÓN DE SUPABASE =====
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 
@@ -20,8 +20,6 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // ===== MIDDLEWARE =====
 app.use(cors());
 app.use(express.json());
-
-// Servir archivos estáticos del frontend (desde la carpeta 'frontend')
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 // ===== FUNCIONES DE ACCESO A DATOS =====
@@ -87,7 +85,7 @@ app.delete('/api/pacientes/:id', async (req, res) => {
     }
 });
 
-// ===== RUTA PRINCIPAL (opcional, para redirigir a index.html) =====
+// ===== RUTA PRINCIPAL =====
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });

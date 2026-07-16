@@ -241,7 +241,7 @@ body {
     padding: 0 20px;
 }
 .paciente-ficha.open {
-    max-height: 3000px; /* suficiente para todo el contenido */
+    max-height: 3000px;
     opacity: 1;
     padding: 20px;
 }

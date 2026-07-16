@@ -2,7 +2,7 @@ import { getPacientes, savePacientes, deletePaciente } from './api.js';
 
 // ===== Variables globales =====
 let pacientes = [];
-let viewMode = 'grid'; // 'grid' | 'list'
+let viewMode = 'grid';
 let filtro = '';
 
 // ===== DOM references =====
@@ -17,7 +17,7 @@ const inputBuscar = document.getElementById('inputBuscar');
 const btnLimpiarBusqueda = document.getElementById('btnLimpiarBusqueda');
 const toastContainer = document.getElementById('toastContainer');
 
-let pacienteEditandoId = null; // null = nuevo
+let pacienteEditandoId = null;
 
 // ===== Funciones auxiliares =====
 function generarId() {
@@ -58,7 +58,6 @@ function renderPacientes() {
             p.dni.includes(q)
         );
     }
-    // Ordenar por cama
     lista.sort((a, b) => (a.cama || Infinity) - (b.cama || Infinity));
 
     if (lista.length === 0) {
@@ -95,7 +94,7 @@ function renderPacientes() {
     container.innerHTML = html;
 }
 
-// Función para renderizar la ficha editable
+// ===== Función para renderizar la ficha editable =====
 function renderFicha(p) {
     const otrosHtml = p.otros.map((otro, idx) => `
         <div class="otro-item" data-otro-idx="${idx}">
@@ -136,6 +135,14 @@ function renderFicha(p) {
             <div class="ficha-group">
                 <label>Obra Social</label>
                 <input type="text" class="ficha-input" data-field="obraSocial" value="${escapeHtml(p.obraSocial)}" />
+            </div>
+            <div class="ficha-group">
+                <label>Motivo de Ingreso</label>
+                <input type="text" class="ficha-input" data-field="motivoIngreso" value="${escapeHtml(p.motivoIngreso)}" />
+            </div>
+            <div class="ficha-group">
+                <label>Sedación</label>
+                <input type="text" class="ficha-input" data-field="sedacion" value="${escapeHtml(p.sedacion)}" />
             </div>
             <div class="ficha-group">
                 <label>Estudios Pendientes</label>
@@ -203,7 +210,7 @@ function renderFicha(p) {
     `;
 }
 
-// ===== Funciones de manipulación de fichas (globales para onclick) =====
+// ===== Funciones globales para el onclick =====
 window.toggleFicha = function(id) {
     const ficha = document.getElementById(`ficha-${id}`);
     const icon = document.getElementById(`icon-${id}`);
@@ -274,7 +281,6 @@ window.guardarFicha = async function(id) {
         if (ultSpan) ultSpan.textContent = p.ultimaActualizacion;
         mostrarToast('Cambios guardados correctamente', 'success');
         renderPacientes();
-        // Reabrir la ficha
         setTimeout(() => {
             const ficha = document.getElementById(`ficha-${id}`);
             if (ficha) ficha.classList.add('open');
@@ -320,7 +326,7 @@ window.eliminarOtroFicha = function(id, idx) {
     }
 };
 
-// ===== Modal para nuevo ingreso / edición =====
+// ===== Modal =====
 function abrirModal(paciente = null) {
     pacienteEditandoId = paciente ? paciente.id : null;
     if (paciente) {
@@ -367,6 +373,14 @@ function generarFormulario(paciente) {
             <div class="form-group">
                 <label>Obra Social</label>
                 <input type="text" id="obraSocialModal" value="${escapeHtml(p.obraSocial || '')}" />
+            </div>
+            <div class="form-group">
+                <label>Motivo de Ingreso</label>
+                <input type="text" id="motivoIngresoModal" value="${escapeHtml(p.motivoIngreso || '')}" />
+            </div>
+            <div class="form-group">
+                <label>Sedación</label>
+                <input type="text" id="sedacionModal" value="${escapeHtml(p.sedacion || '')}" />
             </div>
             <div class="form-group">
                 <label>Estudios Pendientes</label>
@@ -435,7 +449,6 @@ function generarFormulario(paciente) {
     `;
 }
 
-// Función para agregar otro en el modal
 window.agregarOtroModal = function() {
     const container = document.getElementById('otrosModalContainer');
     if (!container) return;
@@ -449,7 +462,7 @@ window.agregarOtroModal = function() {
     container.appendChild(div);
 };
 
-// Enviar formulario modal
+// ===== Evento submit del formulario modal =====
 formPaciente.addEventListener('submit', async function(e) {
     e.preventDefault();
     // Recolectar datos del modal
@@ -468,6 +481,8 @@ formPaciente.addEventListener('submit', async function(e) {
 
     const cama = parseInt(document.getElementById('camaModal').value) || null;
     const obraSocial = document.getElementById('obraSocialModal').value.trim();
+    const motivoIngreso = document.getElementById('motivoIngresoModal').value.trim();
+    const sedacion = document.getElementById('sedacionModal').value.trim();
     const estudios = document.getElementById('estudiosModal').value.trim();
     const viaCentral = document.getElementById('viaCentralModal').checked;
     const fechaViaCentral = document.getElementById('fechaViaCentralModal').value.trim();
@@ -482,7 +497,6 @@ formPaciente.addEventListener('submit', async function(e) {
     const alimParenteral = document.getElementById('alimParenteralModal').value.trim();
     const alergias = document.getElementById('alergiasModal').value.trim();
 
-    // Otros del modal
     const otros = [];
     document.querySelectorAll('#otrosModalContainer .otro-item').forEach(item => {
         const nombreInput = item.querySelector('.otro-nombre-modal');
@@ -499,6 +513,8 @@ formPaciente.addEventListener('submit', async function(e) {
         apellido,
         dni,
         obraSocial,
+        motivoIngreso,
+        sedacion,
         fechaIngreso: fechaHoraStr,
         estudiosPendientes: estudios,
         viaCentral,
@@ -559,6 +575,11 @@ btnLimpiarBusqueda.addEventListener('click', () => {
     filtro = '';
     renderPacientes();
 });
+
+// ===== Exponer funciones globales para los onclick del HTML =====
+window.cerrarModal = cerrarModal;
+window.abrirModal = abrirModal;
+window.agregarOtroModal = agregarOtroModal;
 
 // ===== Inicialización =====
 async function init() {
